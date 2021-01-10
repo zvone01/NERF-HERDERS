@@ -1,0 +1,27 @@
+{
+  "type": "module",
+  "name": "migration",
+  "version": "0.0.0",
+  "description": "load json from the nerf-herders-test-data into a neo4j graph database",
+  "main": "migrate.js",
+  "private": true,
+  "scripts": {
+    "migrate": "node migration.js"
+  },
+  "keywords": [
+    "graph",
+    "node",
+    "javascript",
+    "cypher",
+    "neo4j"
+  ],
+  "dependencies": {
+    "cors": "^2.8.5",
+    "request": "*"
+  },
+  "devDependencies": {
+    "eslint": "^7.17.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  }
+}
