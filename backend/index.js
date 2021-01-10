@@ -4,15 +4,15 @@ var bodyParser = require('body-parser');
 var neo4j = require('neo4j-driver');
 var cors = require('cors');
 
+// setup your username and passford for neo4j database
+const dbusername = 'neo4j';
+const dbpass = '12345678';
+
 var app = express();
-var driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j', '12345678'));
+var driver = neo4j.driver('bolt://localhost', neo4j.auth.basic(dbusername, dbpass));
 var session = driver.session();
 // enable cors
 app.use(cors());
-
-// View Engine
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -23,18 +23,14 @@ app.get('/', (req, res) => {
     .run('MATCH (n) OPTIONAL MATCH (parent)-->(n)   RETURN collect(n {.*, parent}) as nodes')
     .then((result) => {
       var nodeArr = [];
-      // console.log(result);
       // eslint-disable-next-line no-underscore-dangle
       result.records[0]._fields[0].forEach((record) => {
-        // console.log(record.parent == null ? 'yyyy': record.parent['properties'].name);
         nodeArr.push({
           name: record.name,
           description: record.description,
           parent: record.parent == null ? '' : record.parent.properties.name
         });
       });
-      // let allTrees = JSON.parse(jsonString)
-      // res.status(200).send(allTrees)
       res.json(nodeArr);
     })
     .catch((err) => {
